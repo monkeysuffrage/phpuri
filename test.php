@@ -106,5 +106,5 @@ foreach($tests as $test){
   }
 }
 $elapsed = microtime() - $start;
-echo "phpuri:          successes -> $successes, failures => $failures, elapsed time: $elapsed\n";
+echo "net_url2:          successes -> $successes, failures => $failures, elapsed time: $elapsed\n";
 ?>
