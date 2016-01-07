@@ -3,6 +3,7 @@
 require('../rel2abs.php');
 require('../url_to_absolute.php');
 require('phpuri.php');
+require 'Net/URL2.php';
 
 $tests=array(
   array( 'base' => 'http://a/b/c/d;p?q', 'rel' => 'g:h', 'result' => 'g:h'),
@@ -45,6 +46,8 @@ $tests=array(
   array( 'base' => 'http://a/b/c/..', 'rel' => 'g/',  'result' => 'http://a/b/g/'),
 );
 
+echo"<pre>\n";
+
 # rel2abs
 $start = microtime();
 list($successes, $failures) = array(0,0);
@@ -53,6 +56,7 @@ foreach($tests as $test){
     $successes++;
   } else {
     $failures++;
+    echo "rel2abs failure: $r instead of " . $test['result'] . " \n";
   }
 }
 
@@ -67,6 +71,7 @@ foreach($tests as $test){
     $successes++;
   } else {
     $failures++;
+    echo "url_to_absolute failure: $r instead of " . $test['result'] . " \n";
   }
 }
 
@@ -82,7 +87,22 @@ foreach($tests as $test){
     $successes++;
   } else {
     $failures++;
-    echo "failure: $r instead of " . $test['result'] . " \n";
+    echo "phpuri failure: $r instead of " . $test['result'] . " \n";
+  }
+}
+$elapsed = microtime() - $start;
+echo "phpuri:          successes -> $successes, failures => $failures, elapsed time: $elapsed\n";
+
+# net_url2
+$start = microtime();
+list($successes, $failures) = array(0,0);
+foreach($tests as $test){
+  $base = new Net_URL2($test['base']);
+  if(($r = $base->resolve($test['rel'])) == $test['result']){
+    $successes++;
+  } else {
+    $failures++;
+    echo "net_url2 failure: $r instead of " . $test['result'] . " \n";
   }
 }
 $elapsed = microtime() - $start;
