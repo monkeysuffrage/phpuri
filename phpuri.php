@@ -124,7 +124,7 @@
 		}
 
 		/**
-		 * Parse an url string
+		 * Parse a url string
 		 *
 		 * @param string $url the url to parse
 		 *
